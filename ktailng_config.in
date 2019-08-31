@@ -1,0 +1,8 @@
+#ifndef _KTAILNG_CONFIG_H_
+#define _KTAILNG_CONFIG_H_
+
+#define VERSION "${VERSION}"
+#cmakedefine HAVE_KQUEUE @HAVE_KQUEUE@
+#cmakedefine HAVE_INOTIFY @HAVE_INOTIFY@
+
+#endif /* _KTAILNG_CONFIG_H_ */
