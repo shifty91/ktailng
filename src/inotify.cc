@@ -48,18 +48,17 @@ Inotify::Inotify(const std::string& filename) :
 void Inotify::wait()
 {
     while (42) {
-        struct inotify_event *event;
-        unsigned char buf[1 * sizeof(struct inotify_event)];
+        unsigned char buf[sizeof(struct inotify_event)];
+        const struct inotify_event *event;
 
         auto rc = read(fd_, buf, sizeof(buf));
-        if (rc == -1 || rc == 0) {
-            // bail if signalled
+        if (rc <= 0) {
             if (errno == EINTR)
                 break;
             throw std::logic_error("Inotify failed");
         }
 
-        event = (struct inotify_event *)buf;
+        event = reinterpret_cast<const struct inotify_event *>(buf);
         if (event->mask & IN_MODIFY)
             break;
     }
